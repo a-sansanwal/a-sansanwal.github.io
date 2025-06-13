@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Abhishek Sansanwal - Visiting Card</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
       background-color: #dcdcdc;
@@ -21,7 +22,7 @@
     .card {
       width: 3.5in;
       height: 2in;
-      background-color: #fff8e7; /* Creamy off-white */
+      background-color: #fff8e7;
       border: 1px solid #ccc;
       box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
       padding: 0.4in;
@@ -36,7 +37,6 @@
       cursor: pointer;
     }
 
-    /* Simulated thickness using a pseudo-element */
     .card::after {
       content: "";
       position: absolute;
@@ -84,6 +84,19 @@
     .card a:hover {
       text-decoration: underline;
     }
+
+    /* Always use landscape layout on small screens */
+    @media only screen and (max-width: 768px) {
+      body {
+        flex-direction: row;
+      }
+
+      .card {
+        width: 90vw;
+        height: calc(90vw * 2 / 3.5); /* maintain 3.5:2 ratio */
+        padding: 5vw;
+      }
+    }
   </style>
 </head>
 <body>
@@ -92,11 +105,11 @@
     <div class="card" id="card">
       <div>
         <div class="name">Abhishek Sansanwal</div>
-        <div class="title">Senior Software Engineer</div>
+        <div class="title">Software Engineer</div>
       </div>
       <div class="info">
-        Email: <a href="mailto:abhisheksansanwal94@gmail.com">abhisheksansanwal94@gmail.com</a><br>
-        Phone: <a href="tel:+919654118011">+91 96541 18011</a>
+        Email: <a href="mailto:abhishek@example.com">abhishek@example.com</a><br>
+        Phone: <a href="tel:+919876543210">+91 98765 43210</a>
       </div>
     </div>
   </div>
@@ -105,25 +118,12 @@
     const card = document.getElementById('card');
     const isMobile = window.matchMedia("(pointer: coarse)").matches;
 
-    // Make the whole card clickable
     card.addEventListener('click', () => {
       window.location.href = 'resume.html';
     });
 
-    // Tilt effect
-    if (isMobile && window.DeviceOrientationEvent) {
-      window.addEventListener("deviceorientation", (event) => {
-        let { beta, gamma } = event;
-
-        // Force landscape logic
-        let rotateX = Math.max(-20, Math.min(20, -gamma)); // left-right
-        let rotateY = Math.max(-20, Math.min(20, beta - 60)); // front-back
-
-        card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-        card.style.boxShadow = `${-rotateY}px ${-rotateX}px 30px rgba(0, 0, 0, 0.25)`;
-      }, true);
-    } else {
-      // Desktop: mouse movement
+    if (!isMobile) {
+      // Tilt effect only for non-mobile devices
       card.addEventListener('mousemove', (e) => {
         const rect = card.getBoundingClientRect();
         const x = e.clientX - rect.left;
