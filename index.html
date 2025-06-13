@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Visiting Card</title>
+  <title>Interactive Visiting Card</title>
   <style>
     body {
       background-color: #dcdcdc;
@@ -13,6 +13,10 @@
       margin: 0;
     }
 
+    .card-wrapper {
+      perspective: 1200px;
+    }
+
     a.card-link {
       text-decoration: none;
     }
@@ -20,9 +24,9 @@
     .card {
       width: 3.5in;
       height: 2in;
-      background-color: #fff8e7; /* Rich creamy ivory */
+      background-color: #fff8e7;
       border: 1px solid #ccc;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
       font-family: 'Garamond', 'Georgia', serif;
       padding: 0.4in;
       box-sizing: border-box;
@@ -30,12 +34,8 @@
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
-
-    .card:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+      transition: transform 0.1s ease, box-shadow 0.1s ease;
+      transform-style: preserve-3d;
     }
 
     .name {
@@ -55,17 +55,48 @@
   </style>
 </head>
 <body>
-  <a class="card-link" href="resume.html" target="_blank">
-    <div class="card">
-      <div>
-        <div class="name">Abhishek Sansanwal</div>
-        <div class="title">Senior Software Engineer</div>
+  <div class="card-wrapper">
+    <a class="card-link" href="resume.html" target="_blank">
+      <div class="card" id="card">
+        <div>
+          <div class="name">Abhishek Sansanwal</div>
+          <div class="title">Senior Software Engineer</div>
+        </div>
+        <div class="info">
+          Email: abhisheksansanwal94@gmail.com<br>
+          Phone: +91 96541 18011
+        </div>
       </div>
-      <div class="info">
-        Email: abhisheksansanwal94 @ gmail<br>
-        Phone: +91 96541 18011
-      </div>
-    </div>
-  </a>
+    </a>
+  </div>
+
+  <script>
+    const card = document.getElementById('card');
+
+    card.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+
+      // Stronger tilt angles
+      const rotateX = ((y - centerY) / centerY) * -20;
+      const rotateY = ((x - centerX) / centerX) * 20;
+
+      // Dynamic shadow offset
+      const shadowX = ((x - centerX) / centerX) * 15;
+      const shadowY = ((y - centerY) / centerY) * 15;
+
+      card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+      card.style.boxShadow = `${-shadowX}px ${-shadowY}px 30px rgba(0, 0, 0, 0.25)`;
+    });
+
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = 'rotateX(0deg) rotateY(0deg)';
+      card.style.boxShadow = '0 10px 20px rgba(0, 0, 0, 0.2)';
+    });
+  </script>
 </body>
 </html>
