@@ -106,21 +106,135 @@
 </head>
 <body>
 
-  <div class="card-wrapper">
+  <canvas id="mandelbrot-bg" style="position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:0;pointer-events:none;"></canvas>
+  <div class="card-wrapper" style="position:relative;z-index:1;">
     <div class="card" id="card">
-      <div>
-        <div class="name">Abhishek Sansanwal</div>
-        <div class="title">Senior Software Engineer</div>
-      </div>
-      <div class="info">
-        Email: <a href="mailto:abhisheksansanwal94@gmail.com">abhisheksansanwal94@gmail.com</a><br>
-        Phone: <a href="tel:+919654118011">+91 96541 18011</a>
+      <div style="display:flex;flex-direction:column;height:100%;justify-content:space-between;">
+        <div>
+          <div class="name">Abhishek Sansanwal</div>
+          <div class="title">Senior Software Engineer</div>
+        </div>
+        <div class="info">
+          Email: <a href="mailto:abhisheksansanwal94@gmail.com">abhisheksansanwal94@gmail.com</a><br>
+          Phone: <a href="tel:+919654118011">+91 96541 18011</a>
+        </div>
       </div>
     </div>
   </div>
 
   <script>
     const card = document.getElementById('card');
+    // Mandelbrot background rendering
+    // Mandelbrot animation state
+    let mandelbrotZoom = 1.0;
+    let mandelbrotCenter = { x: -0.75, y: 0.1 };
+    let mandelbrotLastWidth = 0, mandelbrotLastHeight = 0;
+
+    // Generate a random dark palette for Mandelbrot
+    const mandelbrotPalette = (() => {
+      // Pick a random base hue in the dark range (e.g. blue, purple, green, teal)
+      const baseHues = [200, 220, 240, 260, 280, 320, 160, 180];
+      const baseHue = baseHues[Math.floor(Math.random() * baseHues.length)];
+      // Randomly pick a hue range (narrow for subtle, wide for more color)
+      const hueRange = 40 + Math.random() * 60; // 40-100
+      // Randomly pick a saturation (0.5-0.8)
+      const sat = 0.5 + Math.random() * 0.3;
+      // Value (brightness) stays low for dark palette
+      const minVal = 0.10 + Math.random() * 0.10; // 0.10-0.20
+      const maxVal = minVal + 0.15 + Math.random() * 0.10; // 0.25-0.35
+      return { baseHue, hueRange, sat, minVal, maxVal };
+    })();
+
+    // Generate a random Mandelbrot center and zoom for variety
+    const mandelbrotRandomCenter = (() => {
+      // Pick a random point in the main Mandelbrot set area
+      // x: [-2.0, 0.5], y: [-1.2, 1.2]
+      // Focus more on interesting regions (x: -1.5 to -0.5)
+      const x = -1.5 + Math.random() * 1.0;
+      const y = -1.2 + Math.random() * 2.4;
+      // Random zoom: 1.0 (full) to 10.0 (deep)
+      const zoom = 1.0 + Math.random() * 9.0;
+      return { x, y, zoom };
+    })();
+
+    function drawMandelbrot(canvas, maxIter = 40) {
+      const ctx = canvas.getContext('2d');
+      const width = canvas.width = window.innerWidth;
+      const height = canvas.height = window.innerHeight;
+      mandelbrotLastWidth = width;
+      mandelbrotLastHeight = height;
+      // Mandelbrot view window
+      const aspect = width / height;
+      const yspan = 1.2 / mandelbrotRandomCenter.zoom;
+      const xspan = yspan * aspect;
+      const xmin = mandelbrotRandomCenter.x - xspan;
+      const xmax = mandelbrotRandomCenter.x + xspan;
+      const ymin = mandelbrotRandomCenter.y - yspan;
+      const ymax = mandelbrotRandomCenter.y + yspan;
+      const imgData = ctx.createImageData(width, height);
+      for (let px = 0; px < width; px++) {
+        for (let py = 0; py < height; py++) {
+          let x0 = xmin + (xmax - xmin) * px / width;
+          let y0 = ymin + (ymax - ymin) * py / height;
+          let x = 0, y = 0, iter = 0;
+          while (x*x + y*y <= 4 && iter < maxIter) {
+            let xtemp = x*x - y*y + x0;
+            y = 2*x*y + y0;
+            x = xtemp;
+            iter++;
+          }
+          // Randomized dark color palette
+          let idx = 4 * (py * width + px);
+          if (iter === maxIter) {
+            // Mandelbrot set: almost black
+            imgData.data[idx] = 8;
+            imgData.data[idx+1] = 10;
+            imgData.data[idx+2] = 18;
+            imgData.data[idx+3] = 120;
+          } else {
+            // HSV to RGB, using randomized palette
+            let t = iter / maxIter;
+            let hue = mandelbrotPalette.baseHue + mandelbrotPalette.hueRange * t;
+            let sat = mandelbrotPalette.sat;
+            let val = mandelbrotPalette.maxVal - (mandelbrotPalette.maxVal - mandelbrotPalette.minVal) * t;
+            // Convert HSV to RGB
+            let c = val * sat;
+            let x = c * (1 - Math.abs(((hue/60)%2)-1));
+            let m = val - c;
+            let r=0,g=0,b=0;
+            if (hue < 60) { r=c; g=x; b=0; }
+            else if (hue < 120) { r=x; g=c; b=0; }
+            else if (hue < 180) { r=0; g=c; b=x; }
+            else if (hue < 240) { r=0; g=x; b=c; }
+            else if (hue < 300) { r=x; g=0; b=c; }
+            else { r=c; g=0; b=x; }
+            imgData.data[idx] = Math.floor((r+m)*255);
+            imgData.data[idx+1] = Math.floor((g+m)*255);
+            imgData.data[idx+2] = Math.floor((b+m)*255);
+            imgData.data[idx+3] = 140 + Math.floor(60 * t); // alpha, slightly more opaque
+          }
+        }
+      }
+      ctx.putImageData(imgData, 0, 0);
+    }
+
+    function animateMandelbrot() {
+      const canvas = document.getElementById('mandelbrot-bg');
+      if (!canvas) return;
+      // Zoom in smoothly
+      // The animation function has been removed to render a static fractal.
+    }
+
+    function resizeMandelbrot() {
+      const canvas = document.getElementById('mandelbrot-bg');
+      if (canvas) drawMandelbrot(canvas, 40);
+    }
+
+    window.addEventListener('resize', resizeMandelbrot);
+    window.addEventListener('DOMContentLoaded', () => {
+      resizeMandelbrot();
+      // The animation request has been removed to render a static fractal.
+    });
     const isMobile = window.matchMedia("(pointer: coarse)").matches;
 
     card.addEventListener('click', () => {
