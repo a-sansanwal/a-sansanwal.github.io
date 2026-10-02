@@ -1,0 +1,278 @@
+graph FamilyTree {
+    graph [
+        rankdir=TB,
+        splines=ortho,
+        nodesep=0.5,
+        ranksep=0.8
+    ];
+
+    node [
+        shape=box,
+        style="rounded"
+    ];
+
+    // =========================================================
+    // ISHWAR SINGH + CHOTTO DEVI
+    // =========================================================
+
+    Ishwar [label="Ishwar Singh"];
+    Chotto [label="Chotto Devi"];
+
+    M1 [shape=point, width=0.01, label=""];
+
+    Ishwar -- M1 [dir=none];
+    Chotto -- M1 [dir=none];
+
+    C1 [shape=point, width=0.01, label=""];
+    M1 -- C1 [dir=none];
+
+    // Children
+    Vikram [label="Vikram Singh"];
+    Omvati [label="Omvati Devi"];
+    Dharamvir [label="Dharamvir Singh"];
+    Rajbir [label="Rajbir Singh"];
+    Karamveer [label="Karamveer Singh"];
+
+    C1 -- Vikram [dir=none];
+    C1 -- Omvati [dir=none];
+    C1 -- Dharamvir [dir=none];
+    C1 -- Rajbir [dir=none];
+    C1 -- Karamveer [dir=none];
+
+
+    // =========================================================
+    // AARTI DEVI'S PATERNAL ANCESTRY
+    // =========================================================
+
+    Kalu [label="Kalu Singh Chillar"];
+    Sher [label="Sher Singh Chillar"];
+    Rai [label="Rai Singh"];
+    Sukhma [label="Sukhma Devi"];
+
+    // Father -> son
+    Kalu -- Sher [dir=none];
+    Sher -- Rai [dir=none];
+
+    // Rai Singh + Sukhma Devi
+    M6 [shape=point, width=0.01, label=""];
+
+    Rai -- M6 [dir=none];
+    Sukhma -- M6 [dir=none];
+
+    // Their son
+    MahenderSingh [label="Mahender Singh Chillar"];
+
+    M6 -- MahenderSingh [dir=none];
+
+
+    // =========================================================
+    // AARTI DEVI'S MATERNAL ANCESTRY
+    // =========================================================
+
+    Chandan [label="Chandan Singh"];
+    Bhuliya [label="Bhuliya Devi"];
+
+    // Chandan Singh + Bhuliya Devi
+    M7 [shape=point, width=0.01, label=""];
+
+    Chandan -- M7 [dir=none];
+    Bhuliya -- M7 [dir=none];
+
+    // Their son
+    Puran [label="Chaudhary Puran Singh Fogat"];
+
+    M7 -- Puran [dir=none];
+
+
+    // Puran Singh + Batto Devi
+    Batto [label="Batto Devi"];
+
+    M8 [shape=point, width=0.01, label=""];
+
+    Puran -- M8 [dir=none];
+    Batto -- M8 [dir=none];
+
+    // Their daughter
+    Vimala [label="Vimala Devi"];
+
+    M8 -- Vimala [dir=none];
+
+
+    // =========================================================
+    // AARTI DEVI'S PARENTS
+    // =========================================================
+
+    M9 [shape=point, width=0.01, label=""];
+
+    MahenderSingh -- M9 [dir=none];
+    Vimala -- M9 [dir=none];
+
+    // Their daughter
+    Aarti [label="Aarti Devi"];
+
+    M9 -- Aarti [dir=none];
+
+
+    // =========================================================
+    // VIKRAM SINGH + AARTI DEVI
+    // =========================================================
+
+    M2 [shape=point, width=0.01, label=""];
+
+    Vikram -- M2 [dir=none];
+    Aarti -- M2 [dir=none];
+
+    C2 [shape=point, width=0.01, label=""];
+    M2 -- C2 [dir=none];
+
+    // Child
+    Abhishek [label="Abhishek Sansanwal"];
+
+    C2 -- Abhishek [dir=none];
+
+
+    // =========================================================
+    // DHARAMVIR SINGH + MAHENDER KAUR
+    // =========================================================
+
+    MahenderKaur [label="Mahender Kaur"];
+
+    M3 [shape=point, width=0.01, label=""];
+
+    Dharamvir -- M3 [dir=none];
+    MahenderKaur -- M3 [dir=none];
+
+    C3 [shape=point, width=0.01, label=""];
+    M3 -- C3 [dir=none];
+
+    Rahul [label="Rahul Sansanwal"];
+    Devender [label="Devender Sansanwal"];
+    Manoj [label="Manoj Sansanwal"];
+
+    C3 -- Rahul [dir=none];
+    C3 -- Devender [dir=none];
+    C3 -- Manoj [dir=none];
+
+
+    // =========================================================
+    // RAJBIR SINGH + SARITA DEVI
+    // =========================================================
+
+    Sarita [label="Sarita Devi"];
+
+    M4 [shape=point, width=0.01, label=""];
+
+    Rajbir -- M4 [dir=none];
+    Sarita -- M4 [dir=none];
+
+    C4 [shape=point, width=0.01, label=""];
+    M4 -- C4 [dir=none];
+
+    Mohit [label="Mohit Sansanwal"];
+    Jitender [label="Jitender Sansanwal"];
+
+    C4 -- Mohit [dir=none];
+    C4 -- Jitender [dir=none];
+
+
+    // =========================================================
+    // KARAMVEER SINGH + KRISHNA DEVI
+    // =========================================================
+
+    Krishna [label="Krishna Devi"];
+
+    M5 [shape=point, width=0.01, label=""];
+
+    Karamveer -- M5 [dir=none];
+    Krishna -- M5 [dir=none];
+
+    C5 [shape=point, width=0.01, label=""];
+    M5 -- C5 [dir=none];
+
+    Ashish [label="Ashish Sansanwal"];
+
+    C5 -- Ashish [dir=none];
+
+    // OMVATI DEVI + JAI SINGH SEHRAWAT
+    Jai [label="Jai Singh Sehrawat"];
+    M10 [shape=point, width=0.01, label=""];
+    Omvati -- M10 [dir=none];
+    Jai -- M10 [dir=none];
+
+    C6 [shape=point, width=0.01, label=""];
+    M10 -- C6 [dir=none];
+
+    Nandu [label="Nandu Sehrawat"];
+    Aman [label="Aman Sehrawat"];
+    Sanjay [label="Sanjay Sehrawat"];
+
+    C6 -- Nandu [dir=none];
+    C6 -- Aman [dir=none];
+    C6 -- Sanjay [dir=none];
+
+    // ALIGNMENT FOR OMVATI'S FAMILY
+    { rank=same; Omvati; Jai; }
+    { rank=same; Nandu; Aman; Sanjay; }
+
+    // =========================================================
+    // GENERATIONAL ALIGNMENT
+    // =========================================================
+
+    // Ishwar Singh + Chotto Devi
+    { rank=same;
+        Ishwar;
+        Chotto;
+    }
+
+    // Their children
+    { rank=same;
+        Vikram;
+        Omvati;
+        Dharamvir;
+        Rajbir;
+        Karamveer;
+    }
+
+    // Aarti's paternal grandparents
+    { rank=same;
+        Rai;
+        Sukhma;
+    }
+
+    // Aarti's maternal great-grandparents
+    { rank=same;
+        Chandan;
+        Bhuliya;
+    }
+
+    // Aarti's maternal grandparents
+    { rank=same;
+        Puran;
+        Batto;
+    }
+
+    // Aarti's parents
+    { rank=same;
+        MahenderSingh;
+        Vimala;
+    }
+
+    // Aarti and spouses' generation
+    { rank=same;
+        Aarti;
+        MahenderKaur;
+        Sarita;
+        Krishna;
+    }
+
+    // Children
+    { rank=same;
+        Abhishek;
+        Rahul;
+        Devender;
+        Manoj;
+        Mohit;
+        Jitender;
+        Ashish;
+    }
+}
