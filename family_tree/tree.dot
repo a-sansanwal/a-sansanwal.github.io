@@ -214,6 +214,17 @@ graph FamilyTree {
     { rank=same; Omvati; Jai; }
     { rank=same; Nandu; Aman; Sanjay; }
 
+    // ABHISHEK SANSANWAL — (Author)
+    Abhishek [
+        label="Abhishek Sansanwal",
+        style="rounded,filled,bold",
+        fillcolor="lightyellow",
+        color="black",
+        penwidth=2,
+        fontcolor="black"
+    ];
+
+
     // =========================================================
     // GENERATIONAL ALIGNMENT
     // =========================================================
